@@ -22,7 +22,15 @@ def main():
     with open(filename, "r") as file:
         ip_addresses = file.read().splitlines()
 
-    # ... rest of the code remains the same ...
+    for ip_address in ip_addresses:
+      network, netmask = ip_address.split("/")
+      net = ipaddress.ip_network(f"{network}/{netmask}")
+
+      for host in net.hosts():
+        if ping_ip_address(str(host)):
+          print(f"{host} is reachable")
+        else:
+          print(f"{host} is not reachable")
 
 if __name__ == "__main__":
     try:
